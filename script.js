@@ -1,126 +1,185 @@
 class Calculatrice {
     constructor() {
-        this.resultat = 0;
-        this.historique = [];
+        this.ecran = document.getElementById('ecran');
+        this.resultat = document.getElementById('resultat');
+        this.operation = '';
+        this.lastResult = null;
+        this.newNumber = true;
+        this.initializeEventListeners();
     }
 
-    verifierNombre(a, b) {
-        if (typeof a !== 'number' || typeof b !== 'number' || isNaN(a) || isNaN(b)) {
-            throw new Error("Les entrées doivent être des nombres valides");
-        }
-        return true;
+    initializeEventListeners() {
+        // Ajout des événements pour les nombres
+        document.querySelectorAll('.number').forEach(button => {
+            button.addEventListener('click', () => {
+                this.appendNumber(button.dataset.value);
+            });
+        });
+
+        // Ajout des événements pour les opérateurs
+        document.querySelectorAll('.operator').forEach(button => {
+            button.addEventListener('click', () => {
+                this.appendOperator(button.dataset.value);
+            });
+        });
+
+        // Ajout de l'événement pour le bouton égal
+        document.querySelector('.equal').addEventListener('click', () => {
+            this.calculate();
+        });
+
+        // Ajout de l'événement pour le bouton clear
+        document.querySelector('.clear').addEventListener('click', () => {
+            this.clear();
+        });
     }
 
+    // Méthode pour vérifier si l'entrée est un nombre
+    isNumber(value) {
+        return !isNaN(parseFloat(value)) && isFinite(value);
+    }
+
+    // Méthode d'addition
     add(a, b) {
-        if (this.verifierNombre(a, b)) {
-            this.resultat = a + b;
-            this.historique.push(`${a} + ${b} = ${this.resultat}`);
-            return this.resultat;
-        }
+        if (!this.isNumber(a) || !this.isNumber(b)) return false;
+        return a + b;
     }
 
+    // Méthode de soustraction
     sous(a, b) {
-        if (this.verifierNombre(a, b)) {
-            this.resultat = a - b;
-            this.historique.push(`${a} - ${b} = ${this.resultat}`);
-            return this.resultat;
-        }
+        if (!this.isNumber(a) || !this.isNumber(b)) return false;
+        return a - b;
     }
 
+    // Méthode de multiplication
     multiplication(a, b) {
-        if (this.verifierNombre(a, b)) {
-            this.resultat = a * b;
-            this.historique.push(`${a} × ${b} = ${this.resultat}`);
-            return this.resultat;
-        }
+        if (!this.isNumber(a) || !this.isNumber(b)) return false;
+        return a * b;
     }
 
+    // Méthode de division
     division(a, b) {
-        if (this.verifierNombre(a, b)) {
-            if (b === 0) {
-                throw new Error("Division par zéro impossible");
-            }
-            this.resultat = a / b;
-            this.historique.push(`${a} ÷ ${b} = ${this.resultat}`);
-            return this.resultat;
+        if (!this.isNumber(a) || !this.isNumber(b)) return false;
+        if (b === 0) {
+            alert("Division par zéro impossible!");
+            return false;
         }
+        return a / b;
     }
 
+    // Méthode de modulo
     modulo(a, b) {
-        if (this.verifierNombre(a, b)) {
-            if (b === 0) {
-                throw new Error("Modulo par zéro impossible");
-            }
-            this.resultat = a % b;
-            this.historique.push(`${a} % ${b} = ${this.resultat}`);
-            return this.resultat;
+        if (!this.isNumber(a) || !this.isNumber(b)) return false;
+        if (b === 0) {
+            alert("Modulo par zéro impossible!");
+            return false;
         }
+        return a % b;
     }
 
-    getResultat() {
-        return this.resultat;
-    }
-
-    getHistorique() {
-        return this.historique;
-    }
-}
-
-const calc = new Calculatrice();
-let expression = '';
-let operateur = '';
-let nombre1 = null;
-let nombre2 = null;
-
-function handleClick(valeur) {
-    if (['+', '-', '×', '÷', '%'].includes(valeur)) {
-        if (nombre1 === null) {
-            nombre1 = parseFloat(expression);
-            operateur = valeur;
-            expression = '';
+    // Méthode pour ajouter un nombre à l'écran
+    appendNumber(number) {
+        if (this.lastResult !== null && this.newNumber) {
+            this.operation = '';
+            this.lastResult = null;
+            this.newNumber = false;
         }
-    } else {
-        expression += valeur;
+        this.operation += number;
+        this.ecran.textContent = this.operation;
+        this.resultat.textContent = '';
     }
-    actualiserAffichage();
-}
 
-function calculer() {
-    if (nombre1 !== null && expression !== '') {
-        nombre2 = parseFloat(expression);
+    // Méthode pour ajouter un opérateur à l'écran
+    appendOperator(operator) {
+        if (this.lastResult !== null) {
+            this.operation = this.lastResult + operator;
+            this.newNumber = false;
+            this.lastResult = null;
+        } else if (this.operation !== '' &&
+            !['+', '-', '*', '/', '%', '(', ')'].includes(this.operation[this.operation.length - 1])) {
+            this.operation += operator;
+        }
+        this.ecran.textContent = this.operation;
+        this.resultat.textContent = '';
+    }
+
+    // Méthode pour effacer l'écran
+    clear() {
+        this.operation = '';
+        this.lastResult = null;
+        this.newNumber = true;
+        this.ecran.textContent = '';
+        this.resultat.textContent = '';
+    }
+
+    // Méthode globale pour gérer les opérations
+    calculate() {
         try {
-            let resultat;
-            switch (operateur) {
-                case '+': resultat = calc.add(nombre1, nombre2); break;
-                case '-': resultat = calc.sous(nombre1, nombre2); break;
-                case '×': resultat = calc.multiplication(nombre1, nombre2); break;
-                case '÷': resultat = calc.division(nombre1, nombre2); break;
-                case '%': resultat = calc.modulo(nombre1, nombre2); break;
+            // Vérification de la présence d'opérateurs valides
+            if (!/[+\-*/%]/.test(this.operation)) {
+                throw new Error("Opération invalide");
             }
-            document.getElementById('resultat').innerHTML = `= <span class="text-orange-500">${resultat}</span>`;
-            nombre1 = resultat;
-            expression = '';
-            operateur = '';
+
+            // Évaluation sécurisée de l'expression
+            let result = this.evaluateExpression(this.operation);
+
+            // Vérification du résultat
+            if (result === false || !this.isNumber(result)) {
+                throw new Error("Résultat invalide");
+            }
+
+            // Affichage du résultat
+            this.lastResult = result;
+            this.newNumber = true;
+            this.resultat.textContent = "= " + result;
         } catch (error) {
-            document.getElementById('resultat').innerHTML = `<span class="text-red-500">${error.message}</span>`;
+            alert("Erreur de calcul : " + error.message);
+            this.clear();
         }
     }
-}
 
-function actualiserAffichage() {
-    let affichage = '';
-    if (nombre1 !== null) {
-        affichage += nombre1 + ' ' + operateur + ' ';
+    // Méthode pour évaluer l'expression de manière sécurisée
+    evaluateExpression(expression) {
+        let numbers = expression.split(/[+\-*/%]/).map(Number);
+        let operators = expression.split(/[0-9.]+/).filter(op => op !== '');
+
+        if (numbers.some(n => !this.isNumber(n))) {
+            return false;
+        }
+
+        let result = numbers[0];
+        for (let i = 0; i < operators.length; i++) {
+            const nextNumber = numbers[i + 1];
+            switch (operators[i]) {
+                case '+':
+                    result = this.add(result, nextNumber);
+                    break;
+                case '-':
+                    result = this.sous(result, nextNumber);
+                    break;
+                case '*':
+                    result = this.multiplication(result, nextNumber);
+                    break;
+                case '/':
+                    result = this.division(result, nextNumber);
+                    break;
+                case '%':
+                    result = this.modulo(result, nextNumber);
+                    break;
+                default:
+                    return false;
+            }
+
+            if (result === false) {
+                return false;
+            }
+        }
+
+        return result;
     }
-    affichage += expression;
-    document.getElementById('operation').textContent = affichage;
 }
 
-function effacer() {
-    expression = '';
-    operateur = '';
-    nombre1 = null;
-    nombre2 = null;
-    document.getElementById('operation').textContent = '';
-    document.getElementById('resultat').innerHTML = '= <span class="text-orange-500">0</span>';
-}
+// Initialisation de la calculatrice
+document.addEventListener('DOMContentLoaded', () => {
+    new Calculatrice();
+});

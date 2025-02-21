@@ -4,86 +4,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculatrice</title>
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
 <div class="mx-auto overflow-hidden mt-10 shadow-lg mb-2 bg-purple-900 shadow-lg border rounded-lg md:w-3/6 sm:w-4/6">
-    <div>
-        <div class="p-5 text-white text-center text-3xl bg-purple-900"><span class="text-orange-500">Calcu</span>lator</div>
-        <div id="operation" class="pt-16 p-5 pb-0 text-white text-right text-3xl bg-purple-800"></div>
-        <div id="resultat" class="p-5 text-white text-right text-3xl bg-purple-800">= <span class="text-orange-500">0</span></div>
+    <div class="">
+        <div class="p-5 text-white text-center text-3xl bg-purple-900">
+            <span class="text-orange-500">Calculatrice</span>
+        </div>
+        <div id="ecran" class="pt-16 p-5 pb-0 text-white text-right text-3xl bg-purple-800"></div>
+        <div id="resultat" class="p-5 text-white text-right text-3xl bg-purple-800"></div>
 
         <div class="flex items-stretch bg-purple-900 h-24">
-            <button onclick="handleClick('%')" class="flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold">
+            <button class="operator flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold" data-value="%">
                 <div class="rounded-full h-20 w-20 flex items-center bg-purple-800 justify-center shadow-lg border-2 border-purple-700 hover:border-gray-500">%</div>
             </button>
-            <button onclick="handleClick('(')" class="flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold">
+            <button class="operator flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold" data-value="(">
                 <div class="rounded-full h-20 w-20 flex items-center bg-purple-800 justify-center shadow-lg border-2 border-purple-700 hover:border-gray-500">(</div>
             </button>
-            <button onclick="handleClick(')')" class="flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold">
+            <button class="operator flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold" data-value=")">
                 <div class="rounded-full h-20 w-20 flex items-center bg-purple-800 justify-center shadow-lg border-2 border-purple-700 hover:border-gray-500">)</div>
             </button>
-            <button onclick="handleClick('÷')" class="flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold">
+            <button class="operator flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold" data-value="/">
                 <div class="rounded-full h-20 w-20 flex items-center bg-purple-800 justify-center shadow-lg border-2 border-purple-700 hover:border-gray-500">÷</div>
             </button>
         </div>
 
         <div class="flex items-stretch bg-purple-900 h-24">
-            <button onclick="handleClick('7')" class="flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold">
+            <button class="number flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold" data-value="7">
                 <div class="rounded-full h-20 w-20 flex items-center bg-purple-800 justify-center shadow-lg border-2 border-purple-700 hover:border-gray-500">7</div>
             </button>
-            <button onclick="handleClick('8')" class="flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold">
+            <button class="number flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold" data-value="8">
                 <div class="rounded-full h-20 w-20 flex items-center bg-purple-800 justify-center shadow-lg border-2 border-purple-700 hover:border-gray-500">8</div>
             </button>
-            <button onclick="handleClick('9')" class="flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold">
+            <button class="number flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold" data-value="9">
                 <div class="rounded-full h-20 w-20 flex items-center bg-purple-800 justify-center shadow-lg border-2 border-purple-700 hover:border-gray-500">9</div>
             </button>
-            <button onclick="handleClick('×')" class="flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold">
+            <button class="operator flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold" data-value="*">
                 <div class="rounded-full h-20 w-20 flex items-center bg-purple-800 justify-center shadow-lg border-2 border-purple-700 hover:border-gray-500">×</div>
             </button>
         </div>
 
         <div class="flex items-stretch bg-purple-900 h-24">
-            <button onclick="handleClick('4')" class="flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold">
+            <button class="number flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold" data-value="4">
                 <div class="rounded-full h-20 w-20 flex items-center bg-purple-800 justify-center shadow-lg border-2 border-purple-700 hover:border-gray-500">4</div>
             </button>
-            <button onclick="handleClick('5')" class="flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold">
+            <button class="number flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold" data-value="5">
                 <div class="rounded-full h-20 w-20 flex items-center bg-purple-800 justify-center shadow-lg border-2 border-purple-700 hover:border-gray-500">5</div>
             </button>
-            <button onclick="handleClick('6')" class="flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold">
+            <button class="number flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold" data-value="6">
                 <div class="rounded-full h-20 w-20 flex items-center bg-purple-800 justify-center shadow-lg border-2 border-purple-700 hover:border-gray-500">6</div>
             </button>
-            <button onclick="handleClick('-')" class="flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold">
+            <button class="operator flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold" data-value="-">
                 <div class="rounded-full h-20 w-20 flex items-center bg-purple-800 justify-center shadow-lg border-2 border-purple-700 hover:border-gray-500">-</div>
             </button>
         </div>
 
         <div class="flex items-stretch bg-purple-900 h-24">
-            <button onclick="handleClick('1')" class="flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold">
+            <button class="number flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold" data-value="1">
                 <div class="rounded-full h-20 w-20 flex items-center bg-purple-800 justify-center shadow-lg border-2 border-purple-700 hover:border-gray-500">1</div>
             </button>
-            <button onclick="handleClick('2')" class="flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold">
+            <button class="number flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold" data-value="2">
                 <div class="rounded-full h-20 w-20 flex items-center bg-purple-800 justify-center shadow-lg border-2 border-purple-700 hover:border-gray-500">2</div>
             </button>
-            <button onclick="handleClick('3')" class="flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold">
+            <button class="number flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold" data-value="3">
                 <div class="rounded-full h-20 w-20 flex items-center bg-purple-800 justify-center shadow-lg border-2 border-purple-700 hover:border-gray-500">3</div>
             </button>
-            <button onclick="handleClick('+')" class="flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold">
+            <button class="operator flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold" data-value="+">
                 <div class="rounded-full h-20 w-20 flex items-center bg-purple-800 justify-center shadow-lg border-2 border-purple-700 hover:border-gray-500">+</div>
             </button>
         </div>
 
         <div class="flex items-stretch bg-purple-900 h-24 mb-4">
-            <button onclick="effacer()" class="flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold">
+            <button class="clear flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold" data-value="C">
                 <div class="rounded-full h-20 w-20 flex items-center bg-purple-800 justify-center shadow-lg border-2 border-purple-700 hover:border-gray-500">C</div>
             </button>
-            <button onclick="handleClick('0')" class="flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold">
+            <button class="number flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold" data-value="0">
                 <div class="rounded-full h-20 w-20 flex items-center bg-purple-800 justify-center shadow-lg border-2 border-purple-700 hover:border-gray-500">0</div>
             </button>
-            <button onclick="handleClick('.')" class="flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold">
+            <button class="number flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold" data-value=".">
                 <div class="rounded-full h-20 w-20 flex items-center bg-purple-800 justify-center shadow-lg border-2 border-purple-700 hover:border-gray-500">.</div>
             </button>
-            <button onclick="calculer()" class="flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold">
+            <button class="equal flex-1 px-2 py-2 justify-center flex items-center text-white text-2xl font-semibold" data-value="=">
                 <div class="rounded-full h-20 w-20 flex items-center bg-orange-500 justify-center shadow-lg border-2 border-purple-700 hover:border-gray-500">=</div>
             </button>
         </div>
